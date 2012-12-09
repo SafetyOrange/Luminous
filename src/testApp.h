@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "theOrb.h"
+#include "theGuy.h"
 
 class testApp : public ofBaseApp{
 
@@ -20,17 +20,14 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-    theOrb orbR;
-    theOrb orbG;
-    theOrb orbB;
+    theGuy orbR;
+    theGuy orbG;
+    theGuy orbB;
     
     int mouseDistR;          //The distance between the red orb and the mouse
     int mouseDistG;          //The distance between the green orb and the mouse
     int mouseDistB;          //The distance between the blue orb and the mouse
     
-    
-    int pMouseX;            //The X position of the mouse if clicked in the cirlce
-    int pMouseY;            //The Y position of the mouse if clicked in the circle
     int xDiff;              //The X difference between the selected orb and mouse
     int yDiff;              //The Y difference between the selected orb and mouse
     

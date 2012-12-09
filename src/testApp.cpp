@@ -1,27 +1,34 @@
 #include <iostream>
 #include "testApp.h"
-#include "theOrb.h"
+#include "theGuy.h"
 
 
 //--------------------------------------------------------------
 void testApp::setup(){
 
-    ofBackground(0, 0, 0);
+    ofBackground(150, 150, 150);
     ofEnableSmoothing();
     orbR.setupRed();
     orbG.setupGreen();
     orbB.setupBlue();
     ofSetFrameRate(60);
     ofSetVerticalSync(TRUE);
+    
+    int rgDist = ofDist(orbR.xPos, orbR.yPos,orbG.xPos, orbG.yPos);
+    int rbDist = ofDist(orbR.xPos, orbR.yPos,orbB.xPos, orbB.yPos);
+    int gbDist = ofDist(orbG.xPos, orbG.yPos, orbB.xPos, orbB.yPos);
+    
+    
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-
-    orbR.update();
+    
     mouseDistR= ofDist(orbR.xPos, orbR.yPos, mouseX, mouseY);
     mouseDistG= ofDist(orbG.xPos, orbG.yPos, mouseX, mouseY);
     mouseDistB= ofDist(orbB.xPos, orbB.yPos, mouseX, mouseY);
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -34,6 +41,30 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
+    
+    if(key=='1'){
+        redTrue=true;
+        greenTrue=false;
+        blueTrue=false;
+    }
+    
+    
+    
+    if(key=='2'){
+        redTrue=false;
+        greenTrue=true;
+        blueTrue=false;
+    }
+    
+    
+    
+    
+    if(key=='3'){
+        redTrue=false;
+        greenTrue=false;
+        blueTrue=true;
+    }
+    
 
 
 }
@@ -52,108 +83,46 @@ void testApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
     
- //RED MOVEMENT
     
-    if (mouseDistR<orbR.orbSize){
-        
-        if(pMouseX>orbR.xPos){
-            
-            orbR.xPos=mouseX-xDiff;
-        }
-        
-        else if (pMouseX <=orbR.xPos){
-            orbR.xPos=mouseX+xDiff;
-        }
-        
-        
-        if(pMouseY>orbR.yPos){
-            
-            orbR.yPos=mouseY-yDiff;
-        }
-        else if(pMouseY<=orbR.yPos){
-            orbR.yPos=mouseY+yDiff;
-        }
-    }
-    
-    
-    //GREEN MOVEMENT
-    
-    if (mouseDistG<orbG.orbSize){
-        
-        if(pMouseX>orbG.xPos){
-            
-            orbG.xPos=mouseX-xDiff;
-        }
-        
-        else if (pMouseX <=orbG.xPos){
-            orbG.xPos=mouseX+xDiff;
-        }
-        
-        
-        if(pMouseY>orbG.yPos){
-            
-            orbG.yPos=mouseY-yDiff;
-        }
-        else if(pMouseY<=orbG.yPos){
-            orbG.yPos=mouseY+yDiff;
-        }
-    }
-    
-    //BLUE MOVEMENT
-    
-    if (mouseDistB<orbB.orbSize){
-        
-        if(pMouseX>orbB.xPos){
-            
-            orbB.xPos=mouseX-xDiff;
-        }
-        
-        else if (pMouseX <=orbB.xPos){
-            orbB.xPos=mouseX+xDiff;
-        }
-        
-        
-        if(pMouseY>orbB.yPos){
-            
-            orbB.yPos=mouseY-yDiff;
-        }
-        else if(pMouseY<=orbB.yPos){
-            orbB.yPos=mouseY+yDiff;
-        }
-    }
-    
-    
-    
-    
-   
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
     
-    if (mouseDistR<orbR.orbSize){
-        pMouseX = x;
-        pMouseY = y;
-        xDiff=ofDist(pMouseX, 0, orbR.xPos, 0);
-        yDiff=ofDist(0, pMouseY, 0, orbR.yPos);
-        
+    if(redTrue==true){
+    orbR.pMouseX=mouseX;
+    orbR.pMouseY=mouseY;
+    orbR.beamTrue=true;
+        cout<<"R = T"<<endl;
+    } else if (redTrue==false){
+       // orbR.beamTrue=false;
+        cout<<"R = F"<<endl;
     }
-        if(mouseDistG<orbG.orbSize){
-            pMouseX = x;
-            pMouseY = y;
-        
-        xDiff=ofDist(pMouseX, 0, orbG.xPos, 0);
-        yDiff=ofDist(0, pMouseY, 0, orbG.yPos);
-        }
     
-    if(mouseDistB<orbB.orbSize){
-        pMouseX = x;
-        pMouseY = y;
-        xDiff=ofDist(pMouseX, 0, orbB.xPos, 0);
-        yDiff=ofDist(0, pMouseY, 0, orbB.yPos);
-        
-        
+    
+    
+    if(greenTrue==true){
+        orbG.pMouseX=mouseX;
+        orbG.pMouseY=mouseY;
+        orbG.beamTrue=true;
+        cout<<"G = T"<<endl;
+    } else if (greenTrue==false){
+      //  orbG.beamTrue=false;
+        cout<<"G = F"<<endl;
     }
+    
+    
+    if(blueTrue==true){
+        orbB.pMouseX=mouseX;
+        orbB.pMouseY=mouseY;
+        orbB.beamTrue=true;
+        cout<<"B = T"<<endl;
+    } else if (blueTrue==false){
+     //   orbB.beamTrue=false;
+        cout<<"B = F"<<endl;
+    }
+    
+    
 }
 
 //--------------------------------------------------------------
