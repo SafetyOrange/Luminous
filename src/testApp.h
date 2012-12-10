@@ -19,10 +19,11 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+        void checkIntersect(int g1x, int g1y, int g2x, int g2y);
     
-    theGuy orbR;
-    theGuy orbG;
-    theGuy orbB;
+    theGuy guyR;
+    theGuy guyG;
+    theGuy guyB;
     
     int mouseDistR;          //The distance between the red orb and the mouse
     int mouseDistG;          //The distance between the green orb and the mouse
@@ -31,17 +32,24 @@ class testApp : public ofBaseApp{
     int xDiff;              //The X difference between the selected orb and mouse
     int yDiff;              //The Y difference between the selected orb and mouse
     
+    void interSection(int g1sX, int g1sY, int g1eX, int g1eY, int g2sX, int g2sY, int g2eX, int g2eY);
+    
+    int interX;
+    int interY;
+    
     bool redTrue;
     bool greenTrue;
     bool blueTrue;
     
+    struct vertex
+    {
+        float x,z;
+    };
     
-    ofVbo vbo;
-    ofShader shader;
-    ofEasyCam camera;
+    bool intersect (vertex v1, vertex v2, vertex p1, vertex p2);
+    bool counter_clockwise(vertex p1, vertex p2, vertex p3);
     
-    float camDist;
     
-    ofTexture texture;
+    
 
 };

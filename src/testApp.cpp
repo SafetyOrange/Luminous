@@ -8,15 +8,15 @@ void testApp::setup(){
 
     ofBackground(150, 150, 150);
     ofEnableSmoothing();
-    orbR.setupRed();
-    orbG.setupGreen();
-    orbB.setupBlue();
+    guyR.setupRed();
+    guyG.setupGreen();
+    guyB.setupBlue();
     ofSetFrameRate(60);
     ofSetVerticalSync(TRUE);
     
-    int rgDist = ofDist(orbR.xPos, orbR.yPos,orbG.xPos, orbG.yPos);
-    int rbDist = ofDist(orbR.xPos, orbR.yPos,orbB.xPos, orbB.yPos);
-    int gbDist = ofDist(orbG.xPos, orbG.yPos, orbB.xPos, orbB.yPos);
+    int rgDist = ofDist(guyR.xPos, guyR.yPos,guyG.xPos, guyG.yPos);
+    int rbDist = ofDist(guyR.xPos, guyR.yPos,guyB.xPos, guyB.yPos);
+    int gbDist = ofDist(guyG.xPos, guyG.yPos, guyB.xPos, guyB.yPos);
     
     
 }
@@ -24,19 +24,25 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    mouseDistR= ofDist(orbR.xPos, orbR.yPos, mouseX, mouseY);
-    mouseDistG= ofDist(orbG.xPos, orbG.yPos, mouseX, mouseY);
-    mouseDistB= ofDist(orbB.xPos, orbB.yPos, mouseX, mouseY);
-    
+    mouseDistR= ofDist(guyR.xPos, guyR.yPos, mouseX, mouseY);
+    mouseDistG= ofDist(guyG.xPos, guyG.yPos, mouseX, mouseY);
+    mouseDistB= ofDist(guyB.xPos, guyB.yPos, mouseX, mouseY);
     
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 
-    orbR.drawRed();
-    orbG.drawGreen();
-    orbB.drawBlue();
+    guyR.drawRed();
+    guyG.drawGreen();
+    guyB.drawBlue();
+    
+    cout<< interX << ", " << interY << endl;
+    
+    interSection(guyR.xPos, guyR.pMouseX, guyR.yPos, guyR.pMouseY, guyG.xPos, guyG.pMouseX, guyG.yPos, guyG.pMouseY);
+    interSection(guyG.xPos, guyG.pMouseX, guyG.yPos, guyG.pMouseY, guyB.xPos, guyB.pMouseX, guyB.yPos, guyB.pMouseY);
+    interSection(guyR.xPos, guyR.pMouseX, guyR.yPos, guyR.pMouseY, guyB.xPos, guyB.pMouseX, guyB.yPos, guyB.pMouseY);
+    
 }
 
 //--------------------------------------------------------------
@@ -90,35 +96,35 @@ void testApp::mouseDragged(int x, int y, int button){
 void testApp::mousePressed(int x, int y, int button){
     
     if(redTrue==true){
-    orbR.pMouseX=mouseX;
-    orbR.pMouseY=mouseY;
-    orbR.beamTrue=true;
+    guyR.pMouseX=mouseX;
+    guyR.pMouseY=mouseY;
+    guyR.beamTrue=true;
         cout<<"R = T"<<endl;
     } else if (redTrue==false){
-       // orbR.beamTrue=false;
+       // guyR.beamTrue=false;
         cout<<"R = F"<<endl;
     }
     
     
     
     if(greenTrue==true){
-        orbG.pMouseX=mouseX;
-        orbG.pMouseY=mouseY;
-        orbG.beamTrue=true;
+        guyG.pMouseX=mouseX;
+        guyG.pMouseY=mouseY;
+        guyG.beamTrue=true;
         cout<<"G = T"<<endl;
     } else if (greenTrue==false){
-      //  orbG.beamTrue=false;
+      //  guyG.beamTrue=false;
         cout<<"G = F"<<endl;
     }
     
     
     if(blueTrue==true){
-        orbB.pMouseX=mouseX;
-        orbB.pMouseY=mouseY;
-        orbB.beamTrue=true;
+        guyB.pMouseX=mouseX;
+        guyB.pMouseY=mouseY;
+        guyB.beamTrue=true;
         cout<<"B = T"<<endl;
     } else if (blueTrue==false){
-     //   orbB.beamTrue=false;
+     //   guyB.beamTrue=false;
         cout<<"B = F"<<endl;
     }
     
@@ -144,3 +150,33 @@ void testApp::gotMessage(ofMessage msg){
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+//--------------------------------------------------------------
+void testApp::interSection(int g1sX, int g1eX, int g1sY, int g1eY, int g2sX, int g2eX, int g2sY, int g2eY){
+    
+        // Store the values for fast access and easy
+        // equations-to-code conversion
+        float x1 = g1sX, x2 = g1eX, x3 = g2sX, x4 = g2eX;
+        float y1 = g1sY, y2 = g1eY, y3 = g2sY, y4 = g2eY;
+        
+        float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        // If d is zero, there is no intersection
+        if (d == 0) return NULL;
+        
+        // Get the x and y
+        float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4);
+        float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d;
+        float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d;
+        
+        // Check if the x and y coordinates are within both lines
+        if ( x < min(x1, x2) || x > max(x1, x2) ||
+            x < min(x3, x4) || x > max(x3, x4) ) return NULL;
+        if ( y < min(y1, y2) || y > max(y1, y2) ||
+            y < min(y3, y4) || y > max(y3, y4) ) return NULL;
+        
+        // Return the point of intersection
+     //   Point* ret = new Point();
+        interX = x;
+        interY = y;
+    
+    
+    }
