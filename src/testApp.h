@@ -41,15 +41,9 @@ class testApp : public ofBaseApp{
     bool greenTrue;
     bool blueTrue;
     
-    struct vertex
-    {
-        float x,z;
-    };
-    
-    bool intersect (vertex v1, vertex v2, vertex p1, vertex p2);
-    bool counter_clockwise(vertex p1, vertex p2, vertex p3);
-    
-    
+    bool doitSect1;
+    bool doitSectX;
+    bool doitSectY;
     
 
 };

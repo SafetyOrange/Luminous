@@ -14,6 +14,10 @@ void testApp::setup(){
     ofSetFrameRate(60);
     ofSetVerticalSync(TRUE);
     
+    doitSect1=false;
+    doitSectX=false;
+    doitSectY=false;
+    
     int rgDist = ofDist(guyR.xPos, guyR.yPos,guyG.xPos, guyG.yPos);
     int rbDist = ofDist(guyR.xPos, guyR.yPos,guyB.xPos, guyB.yPos);
     int gbDist = ofDist(guyG.xPos, guyG.yPos, guyB.xPos, guyB.yPos);
@@ -39,8 +43,8 @@ void testApp::draw(){
     
     cout<< interX << ", " << interY << endl;
     
-    interSection(guyR.xPos, guyR.pMouseX, guyR.yPos, guyR.pMouseY, guyG.xPos, guyG.pMouseX, guyG.yPos, guyG.pMouseY);
-    interSection(guyG.xPos, guyG.pMouseX, guyG.yPos, guyG.pMouseY, guyB.xPos, guyB.pMouseX, guyB.yPos, guyB.pMouseY);
+    //interSection(guyR.xPos, guyR.pMouseX, guyR.yPos, guyR.pMouseY, guyG.xPos, guyG.pMouseX, guyG.yPos, guyG.pMouseY);
+    //interSection(guyG.xPos, guyG.pMouseX, guyG.yPos, guyG.pMouseY, guyB.xPos, guyB.pMouseX, guyB.yPos, guyB.pMouseY);
     interSection(guyR.xPos, guyR.pMouseX, guyR.yPos, guyR.pMouseY, guyB.xPos, guyB.pMouseX, guyB.yPos, guyB.pMouseY);
     
 }
@@ -88,6 +92,30 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
+    
+    if(redTrue==true){
+        guyR.pMouseX=x;
+        guyR.pMouseY=y;
+        guyR.beamTrue=true;
+
+    }
+    
+    
+    
+    if(greenTrue==true){
+        guyG.pMouseX=x;
+        guyG.pMouseY=y;
+        guyG.beamTrue=true;
+
+    } 
+    
+    
+    if(blueTrue==true){
+        guyB.pMouseX=x;
+        guyB.pMouseY=y;
+        guyB.beamTrue=true;
+            }
+    
     
     
 }
@@ -160,7 +188,8 @@ void testApp::interSection(int g1sX, int g1eX, int g1sY, int g1eY, int g2sX, int
         
         float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
         // If d is zero, there is no intersection
-        if (d == 0) return NULL;
+    if (d == 0) {doitSect1=false;}
+    if (d!=0) {doitSect1=true;}
         
         // Get the x and y
         float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4);
@@ -168,15 +197,26 @@ void testApp::interSection(int g1sX, int g1eX, int g1sY, int g1eY, int g2sX, int
         float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d;
         
         // Check if the x and y coordinates are within both lines
-        if ( x < min(x1, x2) || x > max(x1, x2) ||
-            x < min(x3, x4) || x > max(x3, x4) ) return NULL;
-        if ( y < min(y1, y2) || y > max(y1, y2) ||
-            y < min(y3, y4) || y > max(y3, y4) ) return NULL;
+        if ( x <= min(x1, x2) || x >= max(x1, x2) ||
+            x <= min(x3, x4) || x >= max(x3, x4) ) {doitSectX=false;}
+        else if (x > min(x1, x2) || x > max(x1, x2) ||
+                 x < min(x3, x4) || x < max(x3, x4)){doitSectX=true;}
+                 
+        if ( y <= min(y1, y2) || y >= max(y1, y2) ||
+            y <= min(y3, y4) || y >= max(y3, y4) ) {doitSectY=false;}
+        else if ( y > min(y1, y2) || y < max(y1, y2) ||
+                 y > min(y3, y4) || y < max(y3, y4) ){doitSectY=true;}
         
         // Return the point of intersection
      //   Point* ret = new Point();
-        interX = x;
-        interY = y;
     
+    if(doitSect1&&doitSectX&&doitSectY==true){
+        interX=x;
+        interY=y;
+    }
+    else if(doitSect1||doitSectX||doitSectY==false){
+        interX=0;
+        interY=0;
+    }
     
     }
